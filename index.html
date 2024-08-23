@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Testing</title>
+</head>
+<body>
+    <h1>API Testing</h1>
+
+    <!-- Signup Form -->
+    <h2>Signup</h2>
+    <form id="signupForm">
+        <input type="text" id="signupUsername" placeholder="Username" required>
+        <input type="password" id="signupPassword" placeholder="Password" required>
+        <button type="submit">Signup</button>
+    </form>
+
+    <!-- Login Form -->
+    <h2>Login</h2>
+    <form id="loginForm">
+        <input type="text" id="loginUsername" placeholder="Username" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+        <button type="submit">Login</button>
+    </form>
+
+    <!-- Create Expense Form -->
+    <h2>Create Expense</h2>
+    <form id="expenseForm">
+        <input type="text" id="expenseDescription" placeholder="Description" required>
+        <input type="number" id="expenseAmount" placeholder="Amount" required>
+        <button type="submit">Create Expense</button>
+    </form>
+
+    <script>
+        // Handle Signup
+        document.getElementById('signupForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const username = document.getElementById('signupUsername').value;
+            const password = document.getElementById('signupPassword').value;
+            const response = await fetch('http://localhost:5500/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            });
+            const result = await response.text();
+            alert(result);
+        });
+
+        // Handle Login
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            const response = await fetch('http://localhost:5500/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            });
+            const result = await response.json();
+            alert(`Token: ${result.token}`);
+            localStorage.setItem('token', result.token); // Store token for future requests
+        });
+
+        // Handle Create Expense
+        document.getElementById('expenseForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const description = document.getElementById('expenseDescription').value;
+            const amount = parseFloat(document.getElementById('expenseAmount').value);
+            const token = localStorage.getItem('token');
+            const response = await fetch('http://localhost:5500/expenses', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ description, amount })
+            });
+            const result = await response.json();
+            alert(`Expense Created: ${JSON.stringify(result)}`);
+        });
+    </script>
+</body>
+</html>
