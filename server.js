@@ -1,4 +1,3 @@
-
 require('dotenv').config();
 
 const express = require('express');
@@ -6,12 +5,22 @@ const app = express();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+const knex = require('knex');
+const knexConfig = require('./knexfile');
+const db = knex(knexConfig.development);
+
+
 
 
 app.use(express.json());
 
 // jwt key (more research needed)
 const JWT_SECRET = process.env.JWT_SECRET;
+
+if (!JWT_SECRET) {
+    throw new Error('JWT_SECRET is not defined in the environment variables');
+}
+
 
 // port
 const PORT = process.env.PORT || 5500;
@@ -96,7 +105,7 @@ app.post('/login', async (req, res) => {
    // Create Expense 
 app.post('/expenses', authenticateToken, (req, res) => {
     // defines a POST endpoint at /expenses for creating a new expense
-    // after authenticatetoken we but comma
+    // after authenticatetoken we put comma
 // the 'authenticateToken' middleware runs first to ensure the request is from an authenticated user
 // if the token is valid the request continues otherwise it's denied
     const { description, amount } = req.body;
