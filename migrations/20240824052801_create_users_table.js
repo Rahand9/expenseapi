@@ -8,6 +8,7 @@ exports.up = function(knex) {
     // the . primary is for identifing uniqueness (it enforces that the id values must be unique and cannot be null)
       table.string('username').notNullable().unique();
       // as for this it makes it not to be null and must be unique 
+      //.string is to identify that we will store strings within them
 
       table.string('password').notNullable();
       // same thing here
@@ -18,4 +19,7 @@ exports.up = function(knex) {
   exports.down = function(knex) {
     return knex.schema.dropTable('users');
   };
+ 
+
+
   
