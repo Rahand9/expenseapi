@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const db = require('../config/knex');
+const db = require('../knexfile.js');
+
 
 
 //Signup
@@ -15,6 +16,7 @@ const signup = async (req, res) => {
         res.status(500).send('Error creating the user');
     }
 };
+
 
 // Login
 const login = async (req, res) => {

@@ -1,4 +1,4 @@
-const db = require('../config/knex');
+const db = require('../knexfile.js');
 
 
 // Create Revenue

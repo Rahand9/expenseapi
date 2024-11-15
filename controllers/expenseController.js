@@ -1,4 +1,4 @@
-const db = require('../config/knex');
+const db = require('../knexfile.js');
 
 
 // Create Expense
@@ -22,6 +22,7 @@ const getExpenses = async (req, res) => {
         res.status(500).send('Error getting expenses');
     }
 };
+
 
 // Update Expense
 const updateExpense = async (req, res) => {
